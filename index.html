@@ -1211,7 +1211,7 @@ var OFFSETS = ["UTC-12:00","UTC-11:00","UTC-10:00","UTC-09:00","UTC-08:00","UTC-
   for (var h = 0; h < 24; h++) o += '<option value="' + h + '">' + (h < 10 ? "0" + h : h) + "</option>";
   hh.innerHTML = o;
   o = '<option value="">—</option>';
-  for (var m = 0; m < 60; m += 5) o += '<option value="' + m + '">' + (m < 10 ? "0" + m : m) + "</option>";
+  for (var m = 0; m < 60; m++) o += '<option value="' + m + '">' + (m < 10 ? "0" + m : m) + "</option>";
   mm.innerHTML = o;
 })();
 
@@ -1417,8 +1417,9 @@ briefLink.addEventListener("click", function () {
     if (found) document.getElementById("place").value = "city:" + found[1] + ":" + found[2];
   }
   if (q.get("hh")) {
-    document.getElementById("hh").value = q.get("hh");
-    document.getElementById("mm").value = q.get("mm") || "0";
+    var qh = parseInt(q.get("hh"), 10), qm = parseInt(q.get("mm"), 10);
+    document.getElementById("hh").value = (qh >= 0 && qh <= 23) ? qh : 0;
+    document.getElementById("mm").value = (qm >= 0 && qm <= 59) ? qm : 0;
   } else {
     document.getElementById("noTime").click();
   }
