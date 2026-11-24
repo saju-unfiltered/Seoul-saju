@@ -144,15 +144,20 @@
   .dmline{margin-top:16px;font-size:14.5px;color:var(--ink2)}
   .dmline b{font-family:var(--serif);font-size:17px;font-weight:400;color:var(--ink)}
 
-  /* day pillar identity · star labels */
+  /* day pillar identity · the animal name · star labels */
   .dpill{margin-top:18px;border-top:1px solid var(--rule);padding-top:14px}
-  .dpill .head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:7px}
+  .dpill .kicker{display:block;margin-bottom:7px}
+  .dpill .idline{display:flex;align-items:baseline;gap:8px 12px;flex-wrap:wrap;margin-bottom:8px}
+  .dpill .animal{font-family:var(--serif);font-size:20px;line-height:1.2;color:var(--ink)}
+  .dpill .codes{margin-left:auto;font-size:10px;letter-spacing:.16em;color:var(--muted);white-space:nowrap}
+  .dpill .codes .hz{font-family:var(--serif);font-size:12.5px;letter-spacing:.08em;color:var(--ink2)}
+  .dpill .codes .sep{margin:0 5px;color:var(--rule2)}
+  .dpill p{margin:0;font-size:13.5px;line-height:1.7;color:var(--ink2)}
+  .dpill p.img{margin:0 0 9px;font-family:var(--serif);font-size:13px;font-style:italic;color:var(--muted)}
+  @media (min-width:760px){ .dpill .animal{font-size:22px} }
   .tag{display:inline-block;border:1px solid var(--rule2);padding:2px 6px 3px;font-size:9px;
        letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);line-height:1.2}
   .tag.red{border-color:var(--accent);color:var(--accent)}
-  .dpill .hz{font-family:var(--serif);font-size:15px;color:var(--ink)}
-  .dpill .img{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--muted)}
-  .dpill p{margin:0;font-size:13.5px;line-height:1.7;color:var(--ink2)}
   .stars{margin-top:16px;border-top:1px solid var(--rule)}
   .star{padding:10px 0;border-bottom:1px solid var(--rule)}
   .star .head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:4px}
@@ -338,11 +343,12 @@
       <table class="pillars" id="pillars"></table>
       <p class="dmline" id="whoLine"></p>
       <div class="dpill" id="dpBlock" hidden>
-        <div class="head">
-          <span class="tag" id="dpTag">Day pillar</span>
-          <span class="hz" id="dpHanja"></span>
-          <span class="img" id="dpImage"></span>
+        <span class="kicker">Day pillar · your secret animal</span>
+        <div class="idline">
+          <span class="animal" id="dpAnimal"></span>
+          <span class="codes"><span class="hz" id="dpHanja"></span><span class="sep">·</span><span id="dpKorean"></span></span>
         </div>
+        <p class="img" id="dpImage"></p>
         <p id="dpText"></p>
       </div>
       <div class="stars" id="starBlock" hidden></div>
@@ -1069,6 +1075,428 @@ window.SAJU_COPY = {
       "text": "Your standards reflect off each other until nothing looks finished, and the work is good because of it. What you have to protect is the exit: at some point the mirror goes to the wall and the thing goes out the door."
     }
   },
+  "DAY_PILLAR_META": {
+    "丁丑": {
+      "animal": "Ox",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "JEONG-CHUK",
+      "title": "Red Fire Ox"
+    },
+    "丁亥": {
+      "animal": "Pig",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "JEONG-HAE",
+      "title": "Red Fire Pig"
+    },
+    "丁卯": {
+      "animal": "Rabbit",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "JEONG-MYO",
+      "title": "Red Fire Rabbit"
+    },
+    "丁巳": {
+      "animal": "Snake",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "JEONG-SA",
+      "title": "Red Fire Snake"
+    },
+    "丁未": {
+      "animal": "Goat",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "JEONG-MI",
+      "title": "Red Fire Goat"
+    },
+    "丁酉": {
+      "animal": "Rooster",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "JEONG-YU",
+      "title": "Red Fire Rooster"
+    },
+    "丙午": {
+      "animal": "Horse",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "BYEONG-O",
+      "title": "Red Fire Horse"
+    },
+    "丙子": {
+      "animal": "Rat",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "BYEONG-JA",
+      "title": "Red Fire Rat"
+    },
+    "丙寅": {
+      "animal": "Tiger",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "BYEONG-IN",
+      "title": "Red Fire Tiger"
+    },
+    "丙戌": {
+      "animal": "Dog",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "BYEONG-SUL",
+      "title": "Red Fire Dog"
+    },
+    "丙申": {
+      "animal": "Monkey",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "BYEONG-SIN",
+      "title": "Red Fire Monkey"
+    },
+    "丙辰": {
+      "animal": "Dragon",
+      "color": "Red",
+      "element": "Fire",
+      "korean": "BYEONG-JIN",
+      "title": "Red Fire Dragon"
+    },
+    "乙丑": {
+      "animal": "Ox",
+      "color": "Green",
+      "element": "Wood",
+      "korean": "EUL-CHUK",
+      "title": "Green Wood Ox"
+    },
+    "乙亥": {
+      "animal": "Pig",
+      "color": "Green",
+      "element": "Wood",
+      "korean": "EUL-HAE",
+      "title": "Green Wood Pig"
+    },
+    "乙卯": {
+      "animal": "Rabbit",
+      "color": "Green",
+      "element": "Wood",
+      "korean": "EUL-MYO",
+      "title": "Green Wood Rabbit"
+    },
+    "乙巳": {
+      "animal": "Snake",
+      "color": "Green",
+      "element": "Wood",
+      "korean": "EUL-SA",
+      "title": "Green Wood Snake"
+    },
+    "乙未": {
+      "animal": "Goat",
+      "color": "Green",
+      "element": "Wood",
+      "korean": "EUL-MI",
+      "title": "Green Wood Goat"
+    },
+    "乙酉": {
+      "animal": "Rooster",
+      "color": "Green",
+      "element": "Wood",
+      "korean": "EUL-YU",
+      "title": "Green Wood Rooster"
+    },
+    "壬午": {
+      "animal": "Horse",
+      "color": "Black",
+      "element": "Water",
+      "korean": "IM-O",
+      "title": "Black Water Horse"
+    },
+    "壬子": {
+      "animal": "Rat",
+      "color": "Black",
+      "element": "Water",
+      "korean": "IM-JA",
+      "title": "Black Water Rat"
+    },
+    "壬寅": {
+      "animal": "Tiger",
+      "color": "Black",
+      "element": "Water",
+      "korean": "IM-IN",
+      "title": "Black Water Tiger"
+    },
+    "壬戌": {
+      "animal": "Dog",
+      "color": "Black",
+      "element": "Water",
+      "korean": "IM-SUL",
+      "title": "Black Water Dog"
+    },
+    "壬申": {
+      "animal": "Monkey",
+      "color": "Black",
+      "element": "Water",
+      "korean": "IM-SIN",
+      "title": "Black Water Monkey"
+    },
+    "壬辰": {
+      "animal": "Dragon",
+      "color": "Black",
+      "element": "Water",
+      "korean": "IM-JIN",
+      "title": "Black Water Dragon"
+    },
+    "己丑": {
+      "animal": "Ox",
+      "color": "Yellow",
+      "element": "Earth",
+      "korean": "GI-CHUK",
+      "title": "Yellow Earth Ox"
+    },
+    "己亥": {
+      "animal": "Pig",
+      "color": "Yellow",
+      "element": "Earth",
+      "korean": "GI-HAE",
+      "title": "Yellow Earth Pig"
+    },
+    "己卯": {
+      "animal": "Rabbit",
+      "color": "Yellow",
+      "element": "Earth",
+      "korean": "GI-MYO",
+      "title": "Yellow Earth Rabbit"
+    },
+    "己巳": {
+      "animal": "Snake",
+      "color": "Yellow",
+      "element": "Earth",
+      "korean": "GI-SA",
+      "title": "Yellow Earth Snake"
+    },
+    "己未": {
+      "animal": "Goat",
+      "color": "Yellow",
+      "element": "Earth",
+      "korean": "GI-MI",
+      "title": "Yellow Earth Goat"
+    },
+    "己酉": {
+      "animal": "Rooster",
+      "color": "Yellow",
+      "element": "Earth",
+      "korean": "GI-YU",
+      "title": "Yellow Earth Rooster"
+    },
+    "庚午": {
+      "animal": "Horse",
+      "color": "White",
+      "element": "Metal",
+      "korean": "GYEONG-O",
+      "title": "White Metal Horse"
+    },
+    "庚子": {
+      "animal": "Rat",
+      "color": "White",
+      "element": "Metal",
+      "korean": "GYEONG-JA",
+      "title": "White Metal Rat"
+    },
+    "庚寅": {
+      "animal": "Tiger",
+      "color": "White",
+      "element": "Metal",
+      "korean": "GYEONG-IN",
+      "title": "White Metal Tiger"
+    },
+    "庚戌": {
+      "animal": "Dog",
+      "color": "White",
+      "element": "Metal",
+      "korean": "GYEONG-SUL",
+      "title": "White Metal Dog"
+    },
+    "庚申": {
+      "animal": "Monkey",
+      "color": "White",
+      "element": "Metal",
+      "korean": "GYEONG-SIN",
+      "title": "White Metal Monkey"
+    },
+    "庚辰": {
+      "animal": "Dragon",
+      "color": "White",
+      "element": "Metal",
+      "korean": "GYEONG-JIN",
+      "title": "White Metal Dragon"
+    },
+    "戊午": {
+      "animal": "Horse",
+      "color": "Golden",
+      "element": "Earth",
+      "korean": "MU-O",
+      "title": "Golden Earth Horse"
+    },
+    "戊子": {
+      "animal": "Rat",
+      "color": "Golden",
+      "element": "Earth",
+      "korean": "MU-JA",
+      "title": "Golden Earth Rat"
+    },
+    "戊寅": {
+      "animal": "Tiger",
+      "color": "Golden",
+      "element": "Earth",
+      "korean": "MU-IN",
+      "title": "Golden Earth Tiger"
+    },
+    "戊戌": {
+      "animal": "Dog",
+      "color": "Golden",
+      "element": "Earth",
+      "korean": "MU-SUL",
+      "title": "Golden Earth Dog"
+    },
+    "戊申": {
+      "animal": "Monkey",
+      "color": "Golden",
+      "element": "Earth",
+      "korean": "MU-SIN",
+      "title": "Golden Earth Monkey"
+    },
+    "戊辰": {
+      "animal": "Dragon",
+      "color": "Golden",
+      "element": "Earth",
+      "korean": "MU-JIN",
+      "title": "Golden Earth Dragon"
+    },
+    "甲午": {
+      "animal": "Horse",
+      "color": "Blue",
+      "element": "Wood",
+      "korean": "GAP-O",
+      "title": "Blue Wood Horse"
+    },
+    "甲子": {
+      "animal": "Rat",
+      "color": "Blue",
+      "element": "Wood",
+      "korean": "GAP-JA",
+      "title": "Blue Wood Rat"
+    },
+    "甲寅": {
+      "animal": "Tiger",
+      "color": "Blue",
+      "element": "Wood",
+      "korean": "GAP-IN",
+      "title": "Blue Wood Tiger"
+    },
+    "甲戌": {
+      "animal": "Dog",
+      "color": "Blue",
+      "element": "Wood",
+      "korean": "GAP-SUL",
+      "title": "Blue Wood Dog"
+    },
+    "甲申": {
+      "animal": "Monkey",
+      "color": "Blue",
+      "element": "Wood",
+      "korean": "GAP-SIN",
+      "title": "Blue Wood Monkey"
+    },
+    "甲辰": {
+      "animal": "Dragon",
+      "color": "Blue",
+      "element": "Wood",
+      "korean": "GAP-JIN",
+      "title": "Blue Wood Dragon"
+    },
+    "癸丑": {
+      "animal": "Ox",
+      "color": "Black",
+      "element": "Water",
+      "korean": "GYE-CHUK",
+      "title": "Black Water Ox"
+    },
+    "癸亥": {
+      "animal": "Pig",
+      "color": "Black",
+      "element": "Water",
+      "korean": "GYE-HAE",
+      "title": "Black Water Pig"
+    },
+    "癸卯": {
+      "animal": "Rabbit",
+      "color": "Black",
+      "element": "Water",
+      "korean": "GYE-MYO",
+      "title": "Black Water Rabbit"
+    },
+    "癸巳": {
+      "animal": "Snake",
+      "color": "Black",
+      "element": "Water",
+      "korean": "GYE-SA",
+      "title": "Black Water Snake"
+    },
+    "癸未": {
+      "animal": "Goat",
+      "color": "Black",
+      "element": "Water",
+      "korean": "GYE-MI",
+      "title": "Black Water Goat"
+    },
+    "癸酉": {
+      "animal": "Rooster",
+      "color": "Black",
+      "element": "Water",
+      "korean": "GYE-YU",
+      "title": "Black Water Rooster"
+    },
+    "辛丑": {
+      "animal": "Ox",
+      "color": "White",
+      "element": "Metal",
+      "korean": "SIN-CHUK",
+      "title": "White Metal Ox"
+    },
+    "辛亥": {
+      "animal": "Pig",
+      "color": "White",
+      "element": "Metal",
+      "korean": "SIN-HAE",
+      "title": "White Metal Pig"
+    },
+    "辛卯": {
+      "animal": "Rabbit",
+      "color": "White",
+      "element": "Metal",
+      "korean": "SIN-MYO",
+      "title": "White Metal Rabbit"
+    },
+    "辛巳": {
+      "animal": "Snake",
+      "color": "White",
+      "element": "Metal",
+      "korean": "SIN-SA",
+      "title": "White Metal Snake"
+    },
+    "辛未": {
+      "animal": "Goat",
+      "color": "White",
+      "element": "Metal",
+      "korean": "SIN-MI",
+      "title": "White Metal Goat"
+    },
+    "辛酉": {
+      "animal": "Rooster",
+      "color": "White",
+      "element": "Metal",
+      "korean": "SIN-YU",
+      "title": "White Metal Rooster"
+    }
+  },
   "JOHU": {
     "Autumn:cold": "cold metal with water close by, so you go inward early and call it focus; you need one warm room in the week that has no purpose",
     "Autumn:cool": "sharp, dry, self-contained, slower to warm to people than you look — that distance is why your standards hold",
@@ -1663,7 +2091,13 @@ window.SAJU_COPY = {
   function dayRead(s) {
     var key = STEMS_H[s.day.s] + BRANCHES_H[s.day.b];
     var row = (CP.DAY_PILLAR || {})[key] || { image: "", text: "" };
+    /* the almanac name of the day — colour + element + animal, and its Korean
+       reading — comes from the same table the PDF-side Python builds */
+    var meta = (CP.DAY_PILLAR_META || {})[key] ||
+      { color: "", element: "", animal: "", title: "", korean: "" };
     return { hanja: key, roman: STEMS[s.day.s] + " " + BRANCHES[s.day.b],
+             color: meta.color, element: meta.element, animal: meta.animal,
+             title: meta.title, korean: meta.korean,
              image: row.image, text: row.text };
   }
 
@@ -2017,7 +2451,9 @@ function render(s, diag, focus, unknown, nm, input) {
 
   /* the day pillar's own line — one of sixty, never a template */
   var dp = Saju.dayRead(s);
+  document.getElementById("dpAnimal").textContent = dp.title;
   document.getElementById("dpHanja").textContent = dp.hanja;
+  document.getElementById("dpKorean").textContent = dp.korean;
   document.getElementById("dpImage").textContent = dp.image ? "· " + dp.image : "";
   document.getElementById("dpText").textContent = dp.text;
   document.getElementById("dpBlock").hidden = !dp.text;
