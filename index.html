@@ -154,6 +154,13 @@
               border-top:1px solid #4A3F34;padding-top:14px}
   @media (min-width:760px){ .flag{padding:36px 34px 30px} .flag .hook{font-size:28px} }
 
+  /* snapshot: money · love · health */
+  .snap{border-top:1px solid var(--ink)}
+  .snap .item{padding:15px 0 16px;border-bottom:1px solid var(--rule)}
+  .snap .acct{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+  .snap p{font-size:13px;line-height:1.68;color:var(--ink2);margin:0}
+  .bridge{font-size:11.5px;line-height:1.65;color:var(--muted);margin-top:14px}
+
   /* cta */
   .buy{margin-top:34px;border-top:1px solid var(--ink);padding-top:20px}
   .buy h3{font-size:21px;line-height:1.3;margin-bottom:10px}
@@ -303,6 +310,13 @@
       <div class="lab">Where it bites in 2027</div>
       <p class="where" id="flagWhere"></p>
       <p class="move" id="flagMove"></p>
+    </div>
+
+    <div class="sect" id="snapSect">
+      <span class="kicker">04 · 2027 snapshot</span>
+      <div class="snap" id="snap"></div>
+      <p class="bridge">The focus above is the one that costs you most this year. The twelve-month timeline,
+      the four fixes and the full money, love and body read are in the $19 Blueprint.</p>
     </div>
 
     <div class="buy">
@@ -1127,9 +1141,94 @@ window.DIAG_COPY = {
     });
   }
 
+  /* ── three-line 2027 snapshot: money · love · health ────────
+     Same rules as interpret_en.life_sections, condensed to two sentences
+     per account. Everything comes from the chart: ten-god buckets, element
+     balance, Day Master strength and the 2027 relations. */
+  var ORGAN = {
+    Wood: "liver, eyes and tendons", Fire: "heart, blood and sleep",
+    Earth: "stomach, digestion and skin", Metal: "lungs, breath and skin",
+    Water: "kidneys, bladder and stamina"
+  };
+
+  var MONEY_2027 = {
+    "Direct Wealth": "In 2027 the money question narrows to one line that repeats — a deeper channel beats a wider one.",
+    "Indirect Wealth": "In 2027 income arrives through a side door, by more than one route, and the split is worth counting before you agree to it.",
+    "Direct Officer": "In 2027 the rate stops being a rumour only once a contract or a title puts a number next to your name.",
+    "Seven Killings": "In 2027 risk gets priced by how soon the deadline is, not by how good the story sounds.",
+    "Eating God": "In 2027 what you make and actually ship is the income line; what stays in your head is not.",
+    "Hurting Officer": "In 2027 talent said out loud is what pays — and the same mouth can cost you a deal.",
+    "Direct Resource": "In 2027 a credential or a document raises the rate without a single new client.",
+    "Indirect Resource": "In 2027 the expertise nobody else has packaged is the thing that carries a price.",
+    "Friend": "In 2027 your own name on your own work pays better than a share of someone else’s.",
+    "Rob Wealth": "In 2027 there is a pot with more hands in it, so the split gets agreed in writing before the work starts."
+  };
+
+  function capWord(t) { return t ? t.charAt(0).toUpperCase() + t.slice(1) : t; }
+
+  function snapshot(s) {
+    var b = s.buckets, y = s.sewoon2027;
+    var rows = elementRows(s);
+    var dom = rows.filter(function (r) { return r.state === "dominant"; })[0];
+    var thin = rows.filter(function (r) { return r.state === "thin"; })[0];
+    var weak = s.strength === "Weak";
+
+    /* money — one natal sentence, one for 2027 */
+    var money = b.Wealth >= 2
+      ? "Wealth is native to this chart: money moves toward you and people bring the deals, and the leak is never the earning — it is the container."
+      : b.Wealth === 1
+        ? "One wealth position: a single narrow channel that goes deep only while your attention stays on it."
+        : "Almost no wealth position here, so money will not come of effort alone — the seat where someone pays you has to be built on purpose.";
+    money += " " + (MONEY_2027[y.tgStem] || "In 2027 the shape of the income changes before its size does.");
+
+    /* love — the partnership seat, then what 2027 does to it */
+    var seat = "your partnership seat in " + BRANCHES[s.day.b] + " (" + ANIMALS[s.day.b] + ")";
+    var love = b.Officer >= 2
+      ? "Officer energy runs heavy here, and with " + seat + ", relationships keep turning into responsibilities — you end up managing them instead of being in one."
+      : capWord(seat) + " carries no forced script: nothing in the natal chart predetermines it, so the pattern you repeat is the one you learned.";
+    love += " " + (y.hasHap && (y.hasPunish || y.hasPa || y.hasHarm)
+      ? "2027 pulls someone close and then rubs — attachment arrives well before any definition does."
+      : y.hasHap
+        ? "2027 combines with your chart: people attach quickly, and the definition arrives later than the feelings."
+        : y.hasChung
+          ? "2027 clashes rather than pulls, which surfaces a decision you had already made quietly."
+          : (y.hasPunish || y.hasPa)
+            ? "2027 rubs the relationship line instead of warming it — who carries whom is the sentence under the argument."
+            : "Nothing lands on the relationship line directly in 2027, which makes it a year you choose from rather than one that chooses for you.");
+
+    /* health — the elements that break first, then the year's load */
+    var slow = (thin || dom || { el: "Earth" }).el;
+    var health;
+    if (dom && thin) {
+      health = capWord(dom.el) + " runs the chart and shows up in the " + ORGAN[dom.el] + " first, while " +
+        thin.el + " is the slow part — the " + ORGAN[thin.el] + " need the basics kept regular.";
+    } else if (dom) {
+      health = capWord(dom.el) + " runs the chart, so the " + ORGAN[dom.el] + " react first when you overdo it" +
+        (weak ? ", and with a weak Day Master the crash lands after the deadline, not during it."
+              : "; with the other elements steady, the risk is rhythm rather than one weak organ.");
+    } else if (thin) {
+      health = capWord(thin.el) + " is thin, so the " + ORGAN[thin.el] + " are the part that recovers slowest" +
+        (weak ? ", and a weak Day Master spends faster than it restores."
+              : "; nothing dominates, so the fix is regularity rather than effort.");
+    } else {
+      health = "Your elements are fairly even, so nothing shouts — the risk is rhythm, not a single weak organ.";
+    }
+    health += " " + (y.hasPunish || y.hasPa
+      ? "2027 loads the year in one place: it shows in the " + ORGAN[slow] + " a week after the deadline, not during it."
+      : y.hasChung
+        ? "2027 moves the schedule, and the body books that as sleep lost first, then as the " + ORGAN[slow] + "."
+        : "The year’s load arrives as sleep first, then as the " + ORGAN[slow] + ".");
+
+    return [
+      { label: "Money", text: money },
+      { label: "Love", text: love },
+      { label: "Health", text: health }
+    ];
+  }
+
   global.Saju = {
     compute: compute, diagnose: diagnose, diagVariant: diagVariant,
-    elementRows: elementRows, tenGod: tenGod, stage: stage,
+    elementRows: elementRows, snapshot: snapshot, tenGod: tenGod, stage: stage,
     localToUtc: localToUtc, zoneOffset: zoneOffset, termsOf: termsOf,
     STEMS: STEMS, STEMS_H: STEMS_H, BRANCHES: BRANCHES, BRANCHES_H: BRANCHES_H,
     ANIMALS: ANIMALS, ELEMENTS: ELEMENTS, ELEMENTS_H: ELEMENTS_H
@@ -1371,6 +1470,11 @@ function render(s, diag, focus, unknown, nm) {
   }).join("");
   document.getElementById("flagWhere").textContent = "The trap is " + diag.trap + ".";
   document.getElementById("flagMove").textContent = "First move — " + diag.fix;
+
+  /* 2027 snapshot: money · love · health, all three always visible */
+  document.getElementById("snap").innerHTML = Saju.snapshot(s).map(function (x) {
+    return '<div class="item"><div class="acct">' + x.label + "</div><p>" + esc(x.text) + "</p></div>";
+  }).join("");
 
   document.getElementById("result").style.display = "block";
 }
