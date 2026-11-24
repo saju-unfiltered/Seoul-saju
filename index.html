@@ -5,6 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>2027 Saju — the year your pattern gets expensive</title>
 <meta name="description" content="Traditional Korean Four Pillars, calculated from your birth time and birthplace, read for 2027 without the polite filler.">
+<link rel="canonical" href="https://saju-unfiltered.github.io/Seoul-saju/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="2027 Saju">
+<meta property="og:title" content="2027 Saju — the year your pattern gets expensive">
+<meta property="og:description" content="Your four pillars, your element balance, and the one pattern that turns a normal year into an expensive one. Read for 2027 without the polite filler.">
+<meta property="og:url" content="https://saju-unfiltered.github.io/Seoul-saju/">
+<meta property="og:image" content="https://saju-unfiltered.github.io/Seoul-saju/og-seal.png">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1080">
+<meta property="og:image:alt" content="A red seal reading Ding Wei, the 2027 year pillar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="2027 Saju — the year your pattern gets expensive">
+<meta name="twitter:description" content="Your four pillars, your element balance, and the one pattern that turns a normal year into an expensive one.">
+<meta name="twitter:image" content="https://saju-unfiltered.github.io/Seoul-saju/og-seal.png">
+<meta name="theme-color" content="#FAF7F0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23A8382B'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='29' fill='%23FBF3EC' text-anchor='middle'%3E%E4%B8%81%E6%9C%AA%3C/text%3E%3C/svg%3E">
 <style>
   :root{
     --paper:#FAF7F0; --paper2:#F4EFE6; --ink:#181613; --ink2:#3B362F;
@@ -128,6 +144,34 @@
   .dmline{margin-top:16px;font-size:14.5px;color:var(--ink2)}
   .dmline b{font-family:var(--serif);font-size:17px;font-weight:400;color:var(--ink)}
 
+  /* day pillar identity · star labels */
+  .dpill{margin-top:18px;border-top:1px solid var(--rule);padding-top:14px}
+  .dpill .head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:7px}
+  .tag{display:inline-block;border:1px solid var(--rule2);padding:2px 6px 3px;font-size:9px;
+       letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);line-height:1.2}
+  .tag.red{border-color:var(--accent);color:var(--accent)}
+  .dpill .hz{font-family:var(--serif);font-size:15px;color:var(--ink)}
+  .dpill .img{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--muted)}
+  .dpill p{margin:0;font-size:13.5px;line-height:1.7;color:var(--ink2)}
+  .stars{margin-top:16px;border-top:1px solid var(--rule)}
+  .star{padding:10px 0;border-bottom:1px solid var(--rule)}
+  .star .head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+  .star .where{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .star p{margin:0;font-size:12.8px;line-height:1.65;color:var(--ink2)}
+
+  /* seasonal temperature + past check */
+  .johu{font-size:12.8px;line-height:1.68;color:var(--ink2);margin:14px 0 0;
+        border-top:1px solid var(--rule);padding-top:12px}
+  .check{margin:0 0 18px;padding-bottom:16px;border-bottom:1px solid var(--rule);
+         font-size:13.5px;line-height:1.7;color:var(--ink2)}
+  .check b{display:block;font-family:var(--sans);font-weight:400;font-size:9.5px;letter-spacing:.22em;
+           text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .share{display:flex;gap:20px;flex-wrap:wrap;padding:16px 0 0;border-top:1px solid var(--rule);margin-top:22px}
+  .share button{background:none;border:0;padding:0;font-family:var(--sans);font-size:12px;color:var(--ink2);
+                text-decoration:underline;text-underline-offset:3px;cursor:pointer;letter-spacing:.02em}
+  .share button.done{color:var(--accent);text-decoration:none}
+  #shareBottom{margin-top:26px;padding-bottom:4px}
+
   .bars{margin-top:3px}
   .bar{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:11.5px}
   .bar .n{width:52px;color:var(--ink2);font-family:var(--serif);font-size:12.5px}
@@ -230,6 +274,7 @@
 
       <div class="field">
         <span class="lbl">Place of birth</span>
+        <input type="text" id="placeFilter" placeholder="Filter city, e.g. London, Manila..." aria-label="Filter the city list" autocomplete="off" autocapitalize="off" spellcheck="false">
         <select id="place" aria-label="Birth city or time zone"></select>
         <div class="hint">The city sets your time zone, including daylight saving on the year you were born.</div>
       </div>
@@ -283,20 +328,36 @@
 
   <section id="result" aria-live="polite">
 
-    <div class="sect" style="padding-top:34px">
+    <div class="share" id="shareTop">
+      <button type="button" class="linkish" data-share="link">Copy my reading link</button>
+      <button type="button" class="linkish" data-share="summary">Copy 1-line summary</button>
+    </div>
+
+    <div class="sect" style="padding-top:20px">
       <span class="kicker">01 · Your chart</span>
       <table class="pillars" id="pillars"></table>
       <p class="dmline" id="whoLine"></p>
+      <div class="dpill" id="dpBlock" hidden>
+        <div class="head">
+          <span class="tag" id="dpTag">Day pillar</span>
+          <span class="hz" id="dpHanja"></span>
+          <span class="img" id="dpImage"></span>
+        </div>
+        <p id="dpText"></p>
+      </div>
+      <div class="stars" id="starBlock" hidden></div>
     </div>
 
     <div class="sect">
       <span class="kicker">02 · Five elements</span>
       <div class="bars" id="bars"></div>
       <p class="small" id="elNote" style="margin-top:12px"></p>
+      <p class="johu" id="johuNote"></p>
     </div>
 
     <div class="sect">
       <span class="kicker">03 · 2027</span>
+      <p class="check" id="pastCheck"></p>
       <div class="kw" id="kws"></div>
       <p class="small" id="yearLine" style="margin-top:14px"></p>
     </div>
@@ -338,6 +399,11 @@
         <button type="button" id="briefLink">see a sample Monthly Solar-Term Brief ($6.99/mo)</button>
       </div>
       <div class="note-inline" id="briefNote"></div>
+    </div>
+
+    <div class="share" id="shareBottom">
+      <button type="button" class="linkish" data-share="link">Copy my reading link</button>
+      <button type="button" class="linkish" data-share="summary">Copy 1-line summary</button>
     </div>
   </section>
 
@@ -613,7 +679,7 @@ return new kd(this.curr.time,a,b)};$jscomp.global.Object.defineProperties(H.prot
 
 </script>
 <script>
-/* generated from interpret_en.DIAG_COPY — do not edit by hand */
+/* generated from interpret_en — do not edit by hand */
 window.DIAG_COPY = {
   "direction:overloaded": {
     "core": "Three or more officer positions is a chart people hand responsibility to. You are not short of options — you are carrying everyone else’s. The exhaustion you call ‘not knowing what I want’ is the cost of having said yes to six things that were never yours. Direction does not arrive by thinking. It arrives when something is dropped.",
@@ -758,6 +824,356 @@ window.DIAG_COPY = {
       "You feel richer in work and poorer in the account, at the same time"
     ],
     "trap": "settling up late, with people you like"
+  }
+};
+window.SAJU_COPY = {
+  "DAY_PILLAR": {
+    "丁丑": {
+      "image": "a candle in a frozen cellar",
+      "text": "You keep something small and warm burning in conditions that should have put it out. That is the gift and the problem — you hold on long after the room has any heat left to give."
+    },
+    "丁亥": {
+      "image": "a lantern on a winter shore",
+      "text": "You carry a small light into cold, practical situations and you do not ask for credit. It is the most useful thing about you and the reason you keep getting handed everyone else's difficult night."
+    },
+    "丁卯": {
+      "image": "a candle in a spring thicket",
+      "text": "Your attention is narrow and warm and you spend it on growing things: people, plants, small projects nobody else notices. You are never the loudest thing in the room and you are usually the reason anything in it is still alive."
+    },
+    "丁巳": {
+      "image": "a fire in a walled hearth",
+      "text": "You burn with direction and containment, and you are at your best when the room is warm and the walls are clear. Take the walls away and the same fire turns into anxiety."
+    },
+    "丁未": {
+      "image": "a candle in summer dusk",
+      "text": "You are small, warm and precisely placed, and your job is to be the light in a moment that is almost over. You know how to hold a room through an ending, which is why you keep being invited to them."
+    },
+    "丁酉": {
+      "image": "a candle beside a mirror",
+      "text": "You are precise about how things look and you watch yourself being precise. That self-scrutiny is why the work is finished, and why the evenings are long: the mirror does not know how to switch off."
+    },
+    "丙午": {
+      "image": "the sun at noon in midsummer",
+      "text": "You are maximum fire — honest, hot, impossible to ignore, hard to be near for too long. What you have to learn is the second half of the afternoon, when the light has to do something other than shine."
+    },
+    "丙子": {
+      "image": "sunlight on ice",
+      "text": "You look warm and you run cold underneath: generous on the surface, private about what you actually need. People stay for the light and are surprised by how far away you can be."
+    },
+    "丙寅": {
+      "image": "sunrise over a pine forest",
+      "text": "You arrive loud and early and you mean all of it, so people follow the light before they have checked where it is going. You learn the direction by walking; the plan was never the point."
+    },
+    "丙戌": {
+      "image": "a sunset over dry hills",
+      "text": "You have scale: you can light a whole landscape, and you do it most easily at the end of things, when a project needs a closing speech. Beginnings are harder, because that is when the light has to be earned."
+    },
+    "丙申": {
+      "image": "light glancing off a metal edge",
+      "text": "You are bright on contact and quick to reflect someone back at themselves, which makes you excellent in a meeting and slippery in an argument. What you actually think takes longer to surface than what you see."
+    },
+    "丙辰": {
+      "image": "sunlight on a wide lake",
+      "text": "You are generous, visible and slightly scattered, because water takes your light everywhere at once. That makes you a great starter and a poor finisher, unless someone else is holding the shore."
+    },
+    "乙丑": {
+      "image": "a vine on a frozen wall",
+      "text": "You survive by attaching — to a person, a company, a plan — and you keep making it work long after the surface has gone cold. Check twice a year that the wall is still yours to climb."
+    },
+    "乙亥": {
+      "image": "a reed bed in flooded ground",
+      "text": "You bend and keep standing where sturdier things wash out, and you do it without making a scene. The risk is that you bend so consistently that nobody notices a line was crossed."
+    },
+    "乙卯": {
+      "image": "a grove of reeds",
+      "text": "You are flexible to the point of ubiquity: you fit every group, every brief, every season. The gift is survival; the risk is that you can be standing anywhere and it costs you nothing to leave."
+    },
+    "乙巳": {
+      "image": "a vine on a sunlit wall",
+      "text": "You climb toward whatever is bright and warm and you do it gracefully, so nobody calls it ambition. The wall matters more than you admit: change the weather and you find out how much of it was you."
+    },
+    "乙未": {
+      "image": "a vine covering a summer wall",
+      "text": "You adapt to whoever is beside you and you make the surface look intentional. That is a real skill and a real risk: after enough summers you can no longer tell which of your habits were ever yours."
+    },
+    "乙酉": {
+      "image": "a vine on a bronze gate",
+      "text": "You attach to things with a finish — good design, correct language, a person who presents well. It makes your taste reliable and it makes you slow to notice when the gate is locked."
+    },
+    "壬午": {
+      "image": "a river under a noon sun",
+      "text": "You are large and fast and you evaporate at midday: brilliant in the morning, thin by evening. What this needs is not more willpower but a channel that still holds water after the sun goes down."
+    },
+    "壬子": {
+      "image": "the open sea in winter",
+      "text": "You are wide, deep and cold, and you can absorb almost anything without appearing to change. That capacity is the gift, and it is why people underestimate how far out you actually are."
+    },
+    "壬寅": {
+      "image": "a river entering a forest",
+      "text": "You bring flow to places that were stuck and you want to be useful more than you want to be praised. Watch the current — what you set moving, you are then responsible for steering."
+    },
+    "壬戌": {
+      "image": "a river at the edge of dry hills",
+      "text": "You are movement arriving at fixed ground, carrying the ability to change a landscape that has not moved in decades. People find you unsettling and necessary; expect resistance as the sign you are in the right place."
+    },
+    "壬申": {
+      "image": "a river running over stone",
+      "text": "Your mind moves fast over hard facts and you like problems with clear edges: numbers, routes, systems, a mess that can be sorted. Feeling is the part of the river you keep routing around."
+    },
+    "壬辰": {
+      "image": "a deep lake with something moving in it",
+      "text": "You have a large interior and a long memory, and you keep both under a still surface. Your instinct about a situation is usually right months before you can explain it, and you have learned to wait for the explanation."
+    },
+    "己丑": {
+      "image": "a field in January",
+      "text": "You are productive in conditions other people call dead: winter, silence, a job with no audience. You store instead of spending, and you rarely ask whether this particular soil deserves another season."
+    },
+    "己亥": {
+      "image": "a field under November water",
+      "text": "You take in more than you grow: other people's moods, other people's problems, water you did not ask for. You are fertile ground once the flood recedes, and the real skill is deciding what to drain."
+    },
+    "己卯": {
+      "image": "a garden plot in April",
+      "text": "You are a cultivator — you plant, tend, wait — and you are quietly irritated by people who want the harvest in June. Your results arrive late and then keep arriving, which is why nobody credits the patience."
+    },
+    "己巳": {
+      "image": "a warm field in the first week of summer",
+      "text": "You are the practical one in a warm room — the person who turns other people's excitement into a schedule. It gets you trusted early and it means you are almost never allowed to be the beginner."
+    },
+    "己未": {
+      "image": "a summer field after harvest",
+      "text": "You are productive and accommodating and you do not make a fuss about being depleted. That is why nobody notices, and why your version of a boundary arrives as a resignation letter."
+    },
+    "己酉": {
+      "image": "a field after harvest",
+      "text": "You bring things to a clean, finished, slightly bare state and you do not romanticise the middle of the process. People rely on you to close what they started, and rarely ask how much of you is the stubble."
+    },
+    "庚午": {
+      "image": "an iron blade held over a flame",
+      "text": "You burn hot and cut fast, and you usually say the right thing before checking whether it was kind. The speed is the asset; the extra minute before speaking is the part that is missing."
+    },
+    "庚子": {
+      "image": "a blade in cold water",
+      "text": "You are sharp and you are cold and neither is an accident — you keep the emotion out because it would blunt the decision. That makes you the person called when something has to end, and a difficult person to be close to."
+    },
+    "庚寅": {
+      "image": "an axe entering a spring forest",
+      "text": "You cut into new growth without hesitating and you are usually right about which branch has to go. The trouble is timing: spring does not always want pruning, and you find that out by doing it."
+    },
+    "庚戌": {
+      "image": "a sword resting in a dry sheath",
+      "text": "You keep your edge out of sight: direct when it counts, economical the rest of the time. What looks like calm is training, and the people who mistake it for softness find out exactly once."
+    },
+    "庚申": {
+      "image": "two blades facing each other",
+      "text": "You are direct, strong and not especially flexible, and you can cut to the part of the problem nobody wanted named. You need one relationship where you are allowed to be unfinished."
+    },
+    "庚辰": {
+      "image": "a blade resting in a lake bed",
+      "text": "Something sharp is stored in you and it does not rust, and most of the time you keep it under water. The people who have seen it come out do not test you twice."
+    },
+    "戊午": {
+      "image": "a dry mountain at noon",
+      "text": "You are hard, honest and hot, with no water in the chart to soften the verdict. People trust your judgement because you never sweeten it, and you should count how much of your own life goes into holding that posture."
+    },
+    "戊子": {
+      "image": "a dam holding winter water",
+      "text": "You hold a large amount of feeling behind a very solid face and release it in controlled amounts, usually as work. People trust the wall; almost nobody has seen the level behind it."
+    },
+    "戊寅": {
+      "image": "a mountain in a spring forest",
+      "text": "You are the fixed point that young, fast, growing things organise themselves around, and you take that job without being asked. The cost is the start of spring: everyone else grows, you hold the ground."
+    },
+    "戊戌": {
+      "image": "two dry ridges meeting",
+      "text": "You are double earth: loyal, immovable, slow to forgive a change of plan. People build their lives against you because you do not move — and find that the one time you do, there is no discussion."
+    },
+    "戊申": {
+      "image": "a mountain with ore inside it",
+      "text": "You look like terrain and you are actually a resource: people mine you for judgement, patience and structure. Nobody notices the excavation, and you are bad at asking the mine to close for a day."
+    },
+    "戊辰": {
+      "image": "a mountain range sitting over a lake",
+      "text": "Two immovable things in one body: what you decide stays decided, and what you feel stays under the surface for years. People read the steadiness and miss the water, until it comes up all at once."
+    },
+    "甲午": {
+      "image": "a tree struck by full noon sun",
+      "text": "You are all above ground — visible, ambitious, burning your own reserves to keep the canopy up. You need shade more than you need sun, and you will not admit it until the leaves drop."
+    },
+    "甲子": {
+      "image": "a tall tree standing in a winter river",
+      "text": "You grow out of cold water: your ideas come from depth, not momentum, so you are slow to start and impossible to move once the root is in. That is also why you stay too long in a place that stopped feeding you."
+    },
+    "甲寅": {
+      "image": "a forest of tall trees in early spring",
+      "text": "You are double wood: growth on growth, big plans, no subtlety about wanting them. You lead naturally and you will not ask permission — which is exactly why you need one person who can tell you no."
+    },
+    "甲戌": {
+      "image": "a tree on a dry ridge",
+      "text": "You are built to grow where the ground is thin and nobody expects anything to survive. That gives you a stubborn authority, and a habit of choosing hard terrain when an easier field was available."
+    },
+    "甲申": {
+      "image": "a tree on a cliff edge",
+      "text": "You grow where there is no room, and the pressure is the shape of you: capable, exposed, one wind away from a decision. You do your best work when the drop is visible."
+    },
+    "甲辰": {
+      "image": "a tree growing out of a lake bed",
+      "text": "You are rooted in something old and waterlogged: family history, a place, an obligation you never chose. You grow anyway, and the real question in your life is not how high you get but how far from the marsh."
+    },
+    "癸丑": {
+      "image": "frost in a frozen ditch",
+      "text": "You work in small, exact conditions and you feel the temperature before anyone else does. Your instinct is to freeze rather than run, which protects you and keeps you in places that stopped sustaining you."
+    },
+    "癸亥": {
+      "image": "mist over an open sea",
+      "text": "You are soft, pervasive and impossible to hold, and you read the whole room without saying a word. The lesson is not to become solid; it is to leave a written trace, or nothing you see gets credited to you."
+    },
+    "癸卯": {
+      "image": "rain on new leaves",
+      "text": "You are gentle and persistent and you work by saturation rather than force, so people agree with you before they notice they were persuaded. That is influence, and it is also how you end up responsible for other people's decisions."
+    },
+    "癸巳": {
+      "image": "mist rising off a hot spring",
+      "text": "You are sensitive to heat and you diffuse it: you take someone's intensity and turn it into something breathable. The cost is that you absorb what you calm, and it comes out as fatigue nobody can trace."
+    },
+    "癸未": {
+      "image": "dew in summer grass",
+      "text": "You nourish quietly and you are gone by mid-morning, which is how you prefer it. You give people exactly what they needed and then disappear before anyone can turn it into a debt."
+    },
+    "癸酉": {
+      "image": "rain falling on a bronze mirror",
+      "text": "You read people with unsettling accuracy and you show almost nothing back. What looks like calm is a filter: most of what you notice never gets said, and the one time you say all of it, it lands like a verdict."
+    },
+    "辛丑": {
+      "image": "a scalpel in a cold room",
+      "text": "Your precision runs cold: you can dissect a situation without being moved by it, and you are hardest on the people you love most. The blade is necessary; the temperature is a choice."
+    },
+    "辛亥": {
+      "image": "a needle in winter water",
+      "text": "You are thin, sharp and built for one job: finding the flaw in something that looks fine. You work quietly in cold conditions, and the thing you have to protect is the hand that does the sewing."
+    },
+    "辛卯": {
+      "image": "a carving knife on new wood",
+      "text": "Your eye is fine and your material is fresh, so you make things that look effortless and take three times as long as anyone expects. You would rather do one small thing exactly than five things approximately."
+    },
+    "辛巳": {
+      "image": "a scalpel in warm weather",
+      "text": "You have precision and heat together, so you can be cutting and gracious in the same sentence. That combination gets you into rooms and decides early who stays in them."
+    },
+    "辛未": {
+      "image": "a fine knife left in the summer grass",
+      "text": "Your standards are exact and your surface is soft, so people keep underestimating both. You will wait years for the right room rather than lower the blade — that patience is taste, and it is expensive."
+    },
+    "辛酉": {
+      "image": "two mirrors facing each other",
+      "text": "Your standards reflect off each other until nothing looks finished, and the work is good because of it. What you have to protect is the exit: at some point the mirror goes to the wall and the thing goes out the door."
+    }
+  },
+  "JOHU": {
+    "Autumn:cold": "cold metal with water close by, so you go inward early and call it focus; you need one warm room in the week that has no purpose",
+    "Autumn:cool": "sharp, dry, self-contained, slower to warm to people than you look — that distance is why your standards hold",
+    "Autumn:hot": "a dry season with fire on top, so you finish fast and crack while finishing; the harvest is real and so is the exhaustion in November",
+    "Autumn:temperate": "you are built for judgement and finishing and rarely get the temperature wrong; the work is to want something, not to assess it",
+    "Autumn:warm": "a clear head with heat behind it, good for decisions other people avoid — watch the mouth, in this frame the cut lands harder than you meant",
+    "Spring:cold": "new growth in cold ground, which is why you sound more cautious than you are; the plan is sound and needs one warm ally, not more effort",
+    "Spring:cool": "growth with too little light, so your ideas take a year longer than expected and arrive better — protect the slow start instead of apologising for it",
+    "Spring:hot": "growth with a fire under it, so you start in bursts and call it consistency — cool the pace before summer burns your own seedlings",
+    "Spring:temperate": "the season and the chart agree, so you can hold a long build without drama; the problem is deciding what deserves the season",
+    "Spring:warm": "you grow at a workable temperature, early and steadily; the risk is not burnout but taking the first direction that opens",
+    "Summer:cold": "the season should have warmed you and the chart did not, so you run on reserves and call it discipline; warmth arrives through people, not through rest",
+    "Summer:cool": "heat outside and water inside, so you look sociable and need a lot of solitude to recover — book the solitude before someone books you",
+    "Summer:hot": "double heat, and what you call energy is a fire with no water in it — sleep and quiet are not luxuries in this chart, they are the water",
+    "Summer:temperate": "heat and water in balance, so you carry pressure without drying out; the risk is comfort, because nothing forces you to choose",
+    "Summer:warm": "you are built for visible work in the middle of the year and fade in winter without noticing why; put the important things in the warm half",
+    "Winter:cold": "frozen ground, and you have learned to be productive in it; what to watch is the decade spent waiting for spring instead of building a fire",
+    "Winter:cool": "double water, so you think deep and act late and are usually right by the time you act; the window is what it costs",
+    "Winter:hot": "cold ground with a fire in it, which is why you look calm and then act suddenly — the fire is real, it just has no outlet, so give it one project and not five",
+    "Winter:temperate": "still water at a working temperature, good for long thinking and bad for starting — set a date, not an intention",
+    "Winter:warm": "you are the warm thing in a cold season and people come to you for it; keep some heat for yourself, the chart does not generate it for free"
+  },
+  "PAST_POSITION_ORDER": [
+    "Day",
+    "Month",
+    "Year",
+    "Hour",
+    "stem"
+  ],
+  "PAST_QUESTION": {
+    "Day": "the relationship or the daily routine break and rebuild that year",
+    "Hour": "the plan you were keeping quiet about stall or get exposed that year",
+    "Month": "the job, the team or the role turn over that year",
+    "Year": "the place you lived or the family arrangement change shape that year",
+    "stem": "the role stop matching what you were actually doing that year"
+  },
+  "PAST_TIE_QUESTION": {
+    "Day": "someone get close enough to rearrange your days that year",
+    "Hour": "a private plan suddenly acquire a partner that year",
+    "Month": "someone attach to your work and then want a share of it that year",
+    "Year": "someone attach to your base and then cost you that year",
+    "stem": "your name get attached to something you did not choose that year"
+  },
+  "PAST_VERB": {
+    "branch combination": "tied itself to",
+    "clash": "clashed",
+    "destruction": "broke open",
+    "harm": "rubbed against",
+    "punishment": "punished",
+    "self-punishment": "doubled back on",
+    "stem clash": "cut across",
+    "stem combination": "combined with"
+  },
+  "PAST_WEIGHT": {
+    "branch combination": 1.2,
+    "clash": 3.0,
+    "destruction": 2.0,
+    "harm": 2.0,
+    "punishment": 3.0,
+    "self-punishment": 2.5,
+    "stem clash": 1.8,
+    "stem combination": 1.0
+  },
+  "PAST_YEARS": [
+    2024,
+    2025,
+    2026
+  ],
+  "SEASON_OF_MONTH": {
+    "0": "Winter",
+    "1": "Winter",
+    "2": "Spring",
+    "3": "Spring",
+    "4": "Spring",
+    "5": "Summer",
+    "6": "Summer",
+    "7": "Summer",
+    "8": "Autumn",
+    "9": "Autumn",
+    "10": "Autumn",
+    "11": "Winter"
+  },
+  "SEAT_OF_POSITION": {
+    "Day": "the relationship and the shared routine",
+    "Hour": "the plan you were building quietly",
+    "Month": "the work, the job and the team",
+    "Year": "the base, where you live and who you answer to",
+    "stem": "the name people call you by"
+  },
+  "SHINSAL": {
+    "Canopy": {
+      "ko": "화개",
+      "line": "under pressure you go inward: reading, retreating, finishing things alone, and coming back with something nobody asked for",
+      "name": "Canopy"
+    },
+    "Peach Blossom": {
+      "ko": "도화",
+      "line": "attention arrives without being called, and the same open door lets it leave — decide which attention you want before it decides for you",
+      "name": "Peach Blossom"
+    },
+    "Traveling Horse": {
+      "ko": "역마",
+      "line": "you settle best when there is another city, another room, another version of the plan — staying put is the unnatural choice",
+      "name": "Traveling Star"
+    }
   }
 };
 
@@ -1226,10 +1642,138 @@ window.DIAG_COPY = {
     ];
   }
 
+  /* ── day pillar · three stars · seasonal temperature · past check ────
+     The sentences live in interpret_en.py and are exported into
+     window.SAJU_COPY by build_web.py; the rules here mirror the Python
+     functions of the same name, line for line. */
+  var CP = (global.SAJU_COPY || {});
+
+  /* the trine each star is read from (三合): Yin-Wu-Xu · Si-You-Chou ·
+     Shen-Zi-Chen · Hai-Mao-Wei */
+  var DOHWA = { 2: 3, 6: 3, 10: 3, 5: 6, 9: 6, 1: 6, 8: 9, 0: 9, 4: 9, 11: 0, 3: 0, 7: 0 };
+  var YEOKMA = { 2: 8, 6: 8, 10: 8, 5: 11, 9: 11, 1: 11, 8: 2, 0: 2, 4: 2, 11: 5, 3: 5, 7: 5 };
+  var HWAGAE = { 2: 10, 6: 10, 10: 10, 5: 1, 9: 1, 1: 1, 8: 4, 0: 4, 4: 4, 11: 7, 3: 7, 7: 7 };
+  var STAR_ORDER = ["Peach Blossom", "Traveling Horse", "Canopy"];
+
+  function yearPillarOf(y) {
+    var i = ((y - 4) % 60 + 60) % 60;
+    return { s: i % 10, b: i % 12 };
+  }
+
+  function dayRead(s) {
+    var key = STEMS_H[s.day.s] + BRANCHES_H[s.day.b];
+    var row = (CP.DAY_PILLAR || {})[key] || { image: "", text: "" };
+    return { hanja: key, roman: STEMS[s.day.s] + " " + BRANCHES[s.day.b],
+             image: row.image, text: row.text };
+  }
+
+  function shinsal(s) {
+    var tables = { "Peach Blossom": DOHWA, "Traveling Horse": YEOKMA, "Canopy": HWAGAE };
+    var copy = CP.SHINSAL || {};
+    var out = [];
+    STAR_ORDER.forEach(function (name) {
+      var table = tables[name], where = [];
+      [["Year", s.year.b], ["Day", s.day.b]].forEach(function (base) {
+        var target = table[base[1]];
+        if (target === undefined) return;
+        s.pillars.forEach(function (p) {
+          if (p.b === target && where.indexOf(p.label) < 0) where.push(p.label);
+        });
+      });
+      if (where.length) {
+        var c = copy[name] || { name: name, ko: "", line: "" };
+        out.push({ name: c.name || name, ko: c.ko, where: where.join(" · "), line: c.line });
+      }
+    });
+    return out;
+  }
+
+  function gNumber(x) {
+    var r = Math.round(x * 100) / 100;
+    return String(r);
+  }
+
+  function johu(s) {
+    var season = (CP.SEASON_OF_MONTH || {})[String(s.month.b)] || "Spring";
+    var fire = Math.round(s.elementWeighted.Fire * 100) / 100;
+    var water = Math.round(s.elementWeighted.Water * 100) / 100;
+    var diff = Math.round((fire - water) * 100) / 100;
+    var temp = diff >= 3.0 ? "hot" : diff >= 1.2 ? "warm" : diff > -1.2 ? "temperate"
+             : diff > -3.0 ? "cool" : "cold";
+    var clause = (CP.JOHU || {})[season + ":" + temp] || "";
+    var line = "Your month branch " + BRANCHES[s.month.b] + " puts the birth in " + season.toLowerCase() +
+      ", and the chart runs " + gNumber(fire) + " fire against " + gNumber(water) + " water, so the frame is " +
+      temp + ": " + clause + ".";
+    return { season: season, temp: temp, fire: fire, water: water, line: line };
+  }
+
+  function pastContacts(s, st, br) {
+    var out = [];
+    function add(type, pos, branch) { out.push({ type: type, pos: pos, branch: branch }); }
+    s.pillars.forEach(function (p) {
+      if (mapHas(STEM_HAP, st, p.s)) add("stem combination", "stem", BRANCHES[p.b]);
+      if (has(STEM_CHUNG, st, p.s)) add("stem clash", "stem", BRANCHES[p.b]);
+      if (mapHas(BRANCH_YUKHAP, br, p.b)) add("branch combination", p.label, BRANCHES[p.b]);
+      if (has(BRANCH_CHUNG, br, p.b)) add("clash", p.label, BRANCHES[p.b]);
+      if (has(BRANCH_PA, br, p.b)) add("destruction", p.label, BRANCHES[p.b]);
+      if (has(BRANCH_HAE, br, p.b)) add("harm", p.label, BRANCHES[p.b]);
+      HYUNG_GROUPS.forEach(function (g) {
+        if (g.indexOf(br) >= 0 && g.indexOf(p.b) >= 0 && br !== p.b) add("punishment", p.label, BRANCHES[p.b]);
+      });
+      if (has([HYUNG_PAIR], br, p.b)) add("punishment", p.label, BRANCHES[p.b]);
+      if (br === p.b && SELF_HYUNG.indexOf(br) >= 0) add("self-punishment", p.label, BRANCHES[p.b]);
+    });
+    return out;
+  }
+
+  function pastCheck(s) {
+    var years = CP.PAST_YEARS || [2024, 2025, 2026];
+    var posOrder = CP.PAST_POSITION_ORDER || ["Day", "Month", "Year", "Hour", "stem"];
+    var weight = CP.PAST_WEIGHT || {};
+    var rows = [];
+    years.forEach(function (y) {
+      var yp = yearPillarOf(y);
+      var contacts = pastContacts(s, yp.s, yp.b);
+      var score = 0, hard = [], ties = [];
+      contacts.forEach(function (ct) {
+        score += weight[ct.type] || 0;
+        if (/combination$/.test(ct.type)) ties.push(ct); else hard.push(ct);
+      });
+      if (hard.length && ties.length) score += 1;
+      var pool = hard.length ? hard : ties, best = null;
+      pool.forEach(function (ct) {
+        if (!best) { best = ct; return; }
+        var wc = weight[ct.type] || 0, wb = weight[best.type] || 0;
+        if (wc > wb || (wc === wb && posOrder.indexOf(ct.pos) < posOrder.indexOf(best.pos))) best = ct;
+      });
+      rows.push({ year: y, pillar: STEMS[yp.s] + " " + BRANCHES[yp.b],
+                  hanja: STEMS_H[yp.s] + BRANCHES_H[yp.b],
+                  score: Math.round(score * 100) / 100, contacts: contacts.length, best: best });
+    });
+    var top = rows.slice().sort(function (a, b) { return b.score - a.score || b.year - a.year; })[0];
+    if (top.score < 1.5 || !top.best) {
+      return { label: "Check yourself (2024–2026)", year: null, pillar: null, score: 0, rows: rows,
+               line: "Check yourself (2024–2026): nothing in the last three years landed on your four " +
+                     "pillars, so 2027 will be the first year something actually moves — which of your " +
+                     "current arrangements has been coasting on silence?" };
+    }
+    var b = top.best;
+    var verb = (CP.PAST_VERB || {})[b.type] || "touched";
+    var seat = (CP.SEAT_OF_POSITION || {})[b.pos] || "";
+    var q = (/combination$/.test(b.type) ? (CP.PAST_TIE_QUESTION || {})[b.pos]
+                                          : (CP.PAST_QUESTION || {})[b.pos]) || "";
+    var where = b.pos === "stem" ? "your visible role" : "your " + b.pos + " branch " + b.branch;
+    var line = "Check yourself (2024–2026): " + top.year + " came in as " + top.pillar + " and " + verb +
+               " " + where + " (" + seat + ") — did " + q + "?";
+    return { label: "Check yourself (2024–2026)", year: top.year, pillar: top.pillar,
+             hanja: top.hanja, score: top.score, line: line, rows: rows };
+  }
+
   global.Saju = {
     compute: compute, diagnose: diagnose, diagVariant: diagVariant,
     elementRows: elementRows, snapshot: snapshot, tenGod: tenGod, stage: stage,
     localToUtc: localToUtc, zoneOffset: zoneOffset, termsOf: termsOf,
+    dayRead: dayRead, shinsal: shinsal, johu: johu, pastCheck: pastCheck, yearPillarOf: yearPillarOf,
     STEMS: STEMS, STEMS_H: STEMS_H, BRANCHES: BRANCHES, BRANCHES_H: BRANCHES_H,
     ANIMALS: ANIMALS, ELEMENTS: ELEMENTS, ELEMENTS_H: ELEMENTS_H
   };
@@ -1242,7 +1786,9 @@ var CONFIG = {
   blueprintUrl: "",     // ← Gumroad single-product checkout URL
   briefUrl: "",         // ← Gumroad membership URL (secondary, text link only)
   price: "$19",
-  briefPrice: "$6.99/mo"
+  briefPrice: "$6.99/mo",
+  siteUrl: "https://saju-unfiltered.github.io/Seoul-saju/",   // where a copied reading link points
+  threadsUrl: "https://www.threads.com/@saju.unfiltered"
 };
 
 /* ── places: city → IANA zone + longitude ─────────────────────────── */
@@ -1294,16 +1840,46 @@ var OFFSETS = ["UTC-12:00","UTC-11:00","UTC-10:00","UTC-09:00","UTC-08:00","UTC-
   "UTC+10:30","UTC+11:00","UTC+12:00","UTC+12:45","UTC+13:00","UTC+14:00"];
 
 /* build selects */
-(function () {
+function buildPlaceOptions(filterText) {
   var sel = document.getElementById("place");
-  var html = '<option value="">Choose a city — or a UTC offset below</option><optgroup label="City">';
-  PLACES.forEach(function (p) {
-    html += '<option value="city:' + p[1] + ":" + p[2] + '">' + p[0] + "</option>";
+  var keep = sel.value;
+  var q = (filterText || "").trim().toLowerCase();
+  var cities = PLACES.filter(function (p) { return !q || p[0].toLowerCase().indexOf(q) >= 0; });
+  var offs = OFFSETS.filter(function (o) {
+    return !q || o.toLowerCase().indexOf(q) >= 0 || ("utc " + o.slice(3)).toLowerCase().indexOf(q) >= 0;
   });
-  html += '</optgroup><optgroup label="No city listed — use a UTC offset">';
-  OFFSETS.forEach(function (o) { html += '<option value="off:' + o + '">' + o.replace("UTC", "UTC ") + "</option>"; });
-  html += "</optgroup>";
+  var html = '<option value="">Choose a city — or a UTC offset below</option>';
+  if (cities.length) {
+    html += '<optgroup label="City">';
+    cities.forEach(function (p) {
+      html += '<option value="city:' + p[1] + ":" + p[2] + '">' + p[0] + "</option>";
+    });
+    html += "</optgroup>";
+  } else if (q) {
+    html += '<optgroup label="No city match"><option value="" disabled>No city matches that — pick a UTC offset</option></optgroup>';
+  }
+  if (offs.length) {
+    html += '<optgroup label="No city listed — use a UTC offset">';
+    offs.forEach(function (o) { html += '<option value="off:' + o + '">' + o.replace("UTC", "UTC ") + "</option>"; });
+    html += "</optgroup>";
+  }
   sel.innerHTML = html;
+  var values = Array.prototype.map.call(sel.options, function (o) { return o.value; });
+  if (keep && values.indexOf(keep) >= 0) {
+    sel.value = keep;
+  } else if (q && cities.length === 1) {
+    sel.value = "city:" + cities[0][1] + ":" + cities[0][2];
+  }
+}
+
+(function () {
+  buildPlaceOptions("");
+
+  var filter = document.getElementById("placeFilter");
+  filter.addEventListener("input", function () { buildPlaceOptions(filter.value); });
+  filter.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); document.getElementById("place").focus(); }
+  });
 
   var hh = document.getElementById("hh"), mm = document.getElementById("mm");
   var o = '<option value="">—</option>';
@@ -1357,6 +1933,8 @@ document.querySelectorAll("#gender button").forEach(function (btn) {
 
 /* sample fill */
 document.getElementById("demo").addEventListener("click", function () {
+  document.getElementById("placeFilter").value = "";
+  buildPlaceOptions("");
   document.getElementById("y").value = 1996;
   document.getElementById("m").value = 5;
   document.getElementById("d").value = 14;
@@ -1381,9 +1959,13 @@ document.getElementById("form").addEventListener("submit", function (e) {
   var hhV = document.getElementById("hh").value, mmV = document.getElementById("mm").value;
 
   function fail(msg) { err.textContent = msg; err.style.display = "block"; }
+  function daysInMonth(yy, mm) { return new Date(Date.UTC(yy, mm, 0)).getUTCDate(); }
   err.style.display = "none";
   if (!y || !m || !d || y < 1900 || y > 2026 || m < 1 || m > 12 || d < 1 || d > 31) {
     return fail("Check the date of birth.");
+  }
+  if (d > daysInMonth(y, m)) {
+    return fail("Check the date of birth — that month doesn’t have that many days.");
   }
   if (!unknown && hhV === "") return fail("Choose a birth time, or mark it unknown.");
   if (!focusEl) return fail("Pick the one question this year is asking you.");
@@ -1408,11 +1990,13 @@ document.getElementById("form").addEventListener("submit", function (e) {
   } catch (ex) {
     return fail("Something went wrong reading that date. Try again.");
   }
-  render(s, diag, focusEl.dataset.v, unknown, nm);
+  render(s, diag, focusEl.dataset.v, unknown, nm, {
+    y: y, m: m, d: d, hh: unknown ? null : +hhV, mm: unknown ? 0 : (+mmV || 0), tz: place.tz
+  });
   document.getElementById("result").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-function render(s, diag, focus, unknown, nm) {
+function render(s, diag, focus, unknown, nm, input) {
   /* pillars */
   var head = "<tr><th>Year</th><th>Month</th><th>Day</th><th>Hour</th></tr>";
   var cells = ["Year", "Month", "Day", "Hour"].map(function (lab) {
@@ -1431,6 +2015,23 @@ function render(s, diag, focus, unknown, nm) {
     "<b>" + dmName + " (" + Saju.STEMS_H[s.dayMaster] + ")</b> · " + s.gyeokguk +
     " · " + s.strength.toLowerCase() + " Day Master";
 
+  /* the day pillar's own line — one of sixty, never a template */
+  var dp = Saju.dayRead(s);
+  document.getElementById("dpHanja").textContent = dp.hanja;
+  document.getElementById("dpImage").textContent = dp.image ? "· " + dp.image : "";
+  document.getElementById("dpText").textContent = dp.text;
+  document.getElementById("dpBlock").hidden = !dp.text;
+
+  /* Peach Blossom · Traveling Star · Canopy — only the ones this chart carries */
+  var stars = Saju.shinsal(s);
+  var starBlock = document.getElementById("starBlock");
+  starBlock.innerHTML = stars.map(function (x) {
+    return '<div class="star"><div class="head"><span class="tag red">' + esc(x.name) + "</span>" +
+      '<span class="where">' + esc(x.ko) + " · " + esc(x.where) + "</span></div>" +
+      "<p>" + esc(x.line) + "</p></div>";
+  }).join("");
+  starBlock.hidden = !stars.length;
+
   /* elements */
   var rowsEl = Saju.elementRows(s);
   document.getElementById("bars").innerHTML = rowsEl.map(function (r) {
@@ -1443,6 +2044,15 @@ function render(s, diag, focus, unknown, nm) {
   document.getElementById("elNote").textContent =
     (strong.length ? cap(strong.join(" and ")) + " runs the decision before you get a say." : "No element dominates, so nothing overrules you.") +
     " " + (thin.length ? cap(thin.join(" and ")) + " is the first thing to go when you are tired." : "");
+
+  /* seasonal temperature — season plus the fire/water balance of the whole chart */
+  document.getElementById("johuNote").textContent = Saju.johu(s).line;
+
+  /* check yourself: which of 2024–2026 actually touched this chart */
+  var past = Saju.pastCheck(s);
+  document.getElementById("pastCheck").innerHTML =
+    "<b>" + esc(past.label) + "</b>" +
+    esc(past.line.replace(past.label + ": ", ""));
 
   /* keywords + year line */
   var y27 = s.sewoon2027;
@@ -1477,6 +2087,17 @@ function render(s, diag, focus, unknown, nm) {
   }).join("");
 
   document.getElementById("result").style.display = "block";
+
+  /* what the two copy buttons hand to Threads or a friend */
+  var q = new URLSearchParams();
+  q.set("y", input.y); q.set("m", input.m); q.set("d", input.d);
+  if (input.hh !== null) { q.set("hh", input.hh); q.set("mm", input.mm); }
+  q.set("f", focus); q.set("tz", input.tz);
+  window.__share = {
+    link: CONFIG.siteUrl + "?" + q.toString(),
+    summary: "My 2027 saju — " + dp.hanja + " (" + dp.roman + ") day pillar. Red flag: “" + diag.hook + "” " +
+             CONFIG.siteUrl + "?" + q.toString()
+  };
 }
 
 function BRANCH_ELEM(i) { return [4, 2, 0, 0, 2, 1, 1, 2, 3, 3, 2, 4][i]; }
@@ -1487,6 +2108,42 @@ var DM_NAME = {
   0: "Jia Wood", 1: "Yi Wood", 2: "Bing Fire", 3: "Ding Fire", 4: "Wu Earth",
   5: "Ji Earth", 6: "Geng Metal", 7: "Xin Metal", 8: "Ren Water", 9: "Gui Water"
 };
+
+/* ── copy the reading link or the one-line summary ────────────────── */
+function copyText(text) {
+  function legacy() {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.top = "-1000px";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (ex) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return Promise.resolve(navigator.clipboard.writeText(text)).then(function () { return true; },
+                                                                     function () { return legacy(); });
+  }
+  return Promise.resolve(legacy());
+}
+
+Array.prototype.forEach.call(document.querySelectorAll(".share button"), function (btn) {
+  var original = btn.textContent;
+  btn.addEventListener("click", function () {
+    if (!window.__share) return;
+    var text = btn.dataset.share === "summary" ? window.__share.summary : window.__share.link;
+    copyText(text).then(function (ok) {
+      if (!ok) return;
+      btn.textContent = "Copied";
+      btn.classList.add("done");
+      setTimeout(function () { btn.textContent = original; btn.classList.remove("done"); }, 1800);
+    });
+  });
+});
 
 /* CTA wiring — one main product, one quiet secondary */
 var buyBtn = document.getElementById("buyBtn");
@@ -1499,7 +2156,9 @@ buyBtn.textContent = "Get the 2027 Blueprint — " + CONFIG.price;
 
 buyBtn.addEventListener("click", function () {
   if (CONFIG.blueprintUrl) { window.location.href = CONFIG.blueprintUrl; return; }
-  buyNote.textContent = "Checkout opens shortly — DM @saju.unfiltered on Threads and I’ll let you know the moment the Blueprint is live.";
+  buyNote.innerHTML = "Checkout opens shortly — DM <a href=\"" + CONFIG.threadsUrl +
+    "\" target=\"_blank\" rel=\"noopener\">@saju.unfiltered on Threads</a> and I’ll let you know the moment " +
+    "the Blueprint is live.";
   buyNote.style.display = "block";
 });
 briefLink.textContent = "see a sample Monthly Solar-Term Brief (" + CONFIG.briefPrice + ")";
@@ -1517,8 +2176,13 @@ briefLink.addEventListener("click", function () {
   document.getElementById("m").value = q.get("m");
   document.getElementById("d").value = q.get("d");
   if (q.get("tz")) {
-    var found = PLACES.filter(function (p) { return p[1] === q.get("tz"); })[0];
-    if (found) document.getElementById("place").value = "city:" + found[1] + ":" + found[2];
+    var tzq = q.get("tz");
+    var found = PLACES.filter(function (p) { return p[1] === tzq; })[0];
+    if (found) {
+      document.getElementById("place").value = "city:" + found[1] + ":" + found[2];
+    } else if (OFFSETS.indexOf(tzq) >= 0) {
+      document.getElementById("place").value = "off:" + tzq;
+    }
   }
   if (q.get("hh")) {
     var qh = parseInt(q.get("hh"), 10), qm = parseInt(q.get("mm"), 10);
